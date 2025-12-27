@@ -44,7 +44,7 @@ app.use(express.json({limit:"4mb"}));
 app.use(cors());
 
 //Routes setup
-app.use("/api/status",(req,res)=>{ res.send("Server is live") })
+app.use("/",(req,res)=>{ res.send("Server is live") })
 app.use("/api/auth",userRouter);
 app.use("/api/messages",messageRouter)
 
