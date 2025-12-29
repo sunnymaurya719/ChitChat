@@ -12,6 +12,7 @@ export const ChatProvider = ({children}) => {
     const [users,setUsers] = useState([]);
     const [selectedUser,setSelectedUser] = useState(null);
     const [unseenMessages,setUnseenMessages]  = useState({});
+    const [loadingMessages, setLoadingMessages] = useState(false);
 
     const {socket,axios} = useContext(AuthContext);
 
@@ -30,10 +31,13 @@ export const ChatProvider = ({children}) => {
 
     //function to get messages for selected user
     const getMessages = async(userId) => {
+        setLoadingMessages(true);
+        setMessages([]);
         try{
             const response = await axios.get(`/api/messages/${userId}`);
             if(response.data.success){
                 setMessages(response.data.messages);
+                setLoadingMessages(false);
             }
         }catch(error){
             toast.error(error.message);
@@ -79,7 +83,7 @@ export const ChatProvider = ({children}) => {
     },[socket,selectedUser]);
 
     const value = {
-        messages,users,selectedUser,getUsers,getMessages,sendMessage,setSelectedUser,unseenMessages,setUnseenMessages
+        messages,users,selectedUser,getUsers,getMessages,sendMessage,setSelectedUser,unseenMessages,setUnseenMessages,loadingMessages
     }
 
     return(
